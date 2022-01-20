@@ -86,9 +86,13 @@ async function run(): Promise<void> {
       core.debug(`Label: ${context.payload.label.name}`)
 
       if (context.payload.pull_request) {
+        const pr = await octokit.rest.pulls.get({
+          ...context.repo,
+          pull_number: context.payload.pull_request?.number
+        })
         if (context.payload.action === 'labeled') {
           if (labels.includes(context.payload.label.name)) {
-            await toDraft(context.payload.pull_request?.node_id)
+            await toDraft(pr.data.node_id)
             core.info(
               `Pull Request ${context.payload.pull_request?.number} converted to draft`
             )
@@ -96,7 +100,7 @@ async function run(): Promise<void> {
         }
         if (context.payload.action === 'unlabeled') {
           if (labels.includes(label)) {
-            await toReady(context.payload.pull_request?.node_id)
+            await toReady(pr.data.node_id)
             core.info(
               `Pull Request ${context.payload.pull_request?.number} ready for review`
             )
