@@ -89,7 +89,7 @@ function toReady(id) {
 }
 const labels = getInputAsArray('labels');
 function run() {
-    var _a, _b, _c, _d;
+    var _a, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const { context } = github;
@@ -105,16 +105,17 @@ function run() {
                 }
                 core.debug(`Label: ${context.payload.label.name}`);
                 if (context.payload.pull_request) {
+                    const pr = yield octokit.rest.pulls.get(Object.assign(Object.assign({}, context.repo), { pull_number: (_a = context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.number }));
                     if (context.payload.action === 'labeled') {
                         if (labels.includes(context.payload.label.name)) {
-                            yield toDraft((_a = context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.key);
+                            yield toDraft(pr.data.node_id);
                             core.info(`Pull Request ${(_b = context.payload.pull_request) === null || _b === void 0 ? void 0 : _b.number} converted to draft`);
                         }
                     }
                     if (context.payload.action === 'unlabeled') {
                         if (labels.includes(label)) {
-                            yield toReady((_c = context.payload.pull_request) === null || _c === void 0 ? void 0 : _c.key);
-                            core.info(`Pull Request ${(_d = context.payload.pull_request) === null || _d === void 0 ? void 0 : _d.number} ready for review`);
+                            yield toReady(pr.data.node_id);
+                            core.info(`Pull Request ${(_c = context.payload.pull_request) === null || _c === void 0 ? void 0 : _c.number} ready for review`);
                         }
                     }
                 }
