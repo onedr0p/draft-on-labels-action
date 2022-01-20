@@ -88,7 +88,7 @@ async function run(): Promise<void> {
       if (context.payload.pull_request) {
         if (context.payload.action === 'labeled') {
           if (labels.includes(context.payload.label.name)) {
-            await toDraft(context.payload.pull_request?.key)
+            await toDraft(context.payload.pull_request?.node_id)
             core.info(
               `Pull Request ${context.payload.pull_request?.number} converted to draft`
             )
@@ -96,7 +96,7 @@ async function run(): Promise<void> {
         }
         if (context.payload.action === 'unlabeled') {
           if (labels.includes(label)) {
-            await toReady(context.payload.pull_request?.key)
+            await toReady(context.payload.pull_request?.node_id)
             core.info(
               `Pull Request ${context.payload.pull_request?.number} ready for review`
             )
