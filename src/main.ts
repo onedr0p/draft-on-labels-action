@@ -90,21 +90,17 @@ async function run(): Promise<void> {
           ...context.repo,
           pull_number: context.payload.pull_request?.number
         })
-        if (context.payload.action === 'labeled') {
-          if (labels.includes(context.payload.label.name)) {
-            await toDraft(pr.data.node_id)
-            core.info(
-              `Pull Request ${context.payload.pull_request?.number} converted to draft`
-            )
-          }
+        if (context.payload.action === 'labeled' && labels.includes(context.payload.label.name)) {
+          await toDraft(pr.data.node_id)
+          core.info(
+            `Pull Request ${context.payload.pull_request?.number} converted to draft`
+          )
         }
-        if (context.payload.action === 'unlabeled') {
-          if (labels.includes(label)) {
-            await toReady(pr.data.node_id)
-            core.info(
-              `Pull Request ${context.payload.pull_request?.number} ready for review`
-            )
-          }
+        if (context.payload.action === 'unlabeled' && labels.includes(label)) {
+          await toReady(pr.data.node_id)
+          core.info(
+            `Pull Request ${context.payload.pull_request?.number} ready for review`
+          )
         }
       }
     }
