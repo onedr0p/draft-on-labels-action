@@ -1,5 +1,5 @@
-name: 'Update Pull Requests to Draft on Labels'
-description: 'Updates a pull request to a Draft on provided labels'
+name: 'draft-on-labels-action'
+description: 'Manage pull requests draft state on provided labels'
 author: 'Devin Buhl'
 inputs:
   token:
