@@ -1,11 +1,16 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Update Pull Requests to Draft on Labels'
+description: 'Updates a pull request to a Draft on provided labels'
+author: 'Devin Buhl'
 inputs:
-  milliseconds: # change this
+  token:
+    description: >-
+      GITHUB_TOKEN or a `repo` scoped Personal Access Token (PAT)
+    default: ${{ github.token }}
+    required: false
+  labels:
+    description: >-
+      A comma or newline separated list of labels.
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
 runs:
   using: 'node12'
   main: 'dist/index.js'
